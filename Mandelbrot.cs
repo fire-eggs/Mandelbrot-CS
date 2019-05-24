@@ -259,7 +259,8 @@ namespace Mandelbrot
 
         private static int WIDE = 1024;
         private static int HIGH = 1024;
-        private static int MAX_ITER = 256;
+        private static int MAX_ITER = 512;
+        private static double BAILOUT = 1E10;
 
         private static void CopyArrayToBitmap(int width, int height, int depth, byte[] buffer, BitmapData img)
         {
@@ -274,24 +275,27 @@ namespace Mandelbrot
 
         public static Image MakeImage(Region region, Color[] palette, Gradient gradient)
         {
-            int width = WIDE;
-            int height = HIGH;
+            return MakeImage(region, palette, gradient, HIGH, WIDE);
+        }
 
-            var bmp = new Bitmap(width, HIGH, PixelFormat.Format24bppRgb);
-            var img = bmp.LockBits(new Rectangle(0, 0, WIDE, HIGH), ImageLockMode.ReadWrite, bmp.PixelFormat);
+        public static Image MakeImage(Region region, Color[] palette, Gradient gradient, int height, int width)
+        {
+            var bmp = new Bitmap(width, height, PixelFormat.Format24bppRgb);
+            var img = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, bmp.PixelFormat);
             var depth = Image.GetPixelFormatSize(img.PixelFormat) / 8; //bytes per pixel
 
             var buffer =
                 Mandelbrot.DrawMandelbrot(
                     new Size(1, Environment.ProcessorCount),
-                    new Size(width, HIGH),
+                    new Size(width, height),
                     region,
-                    MAX_ITER, palette, gradient, 1E10);
+                    MAX_ITER, palette, gradient, BAILOUT);
 
             CopyArrayToBitmap(width, height, depth, buffer, img);
             bmp.UnlockBits(img);
 
             return bmp;
         }
+
     }
 }

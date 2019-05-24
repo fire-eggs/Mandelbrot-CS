@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Mandelbrot
@@ -25,20 +18,17 @@ namespace Mandelbrot
         {
             InitializeComponent();
 
-            coord1 = -2.5;
-            coord2 = -1;
-            coord3 = 1;
-            coord4 = 1;
-            oAndW = false;
-
-            textBox1.Text = coord1.ToString();
-            textBox2.Text = coord2.ToString();
-            textBox3.Text = coord3.ToString();
-            textBox4.Text = coord4.ToString();
+            BtnReset_Click(null,null);
 
             checkBox1.Checked = oAndW;
 
             button1.Click += Button1_Click;
+
+            pictureBox1.Paint += PictureBox1_Paint;
+            pictureBox1.MouseDown += PictureBox1_MouseDown;
+            pictureBox1.MouseMove += PictureBox1_MouseMove;
+            pictureBox1.MouseUp += PictureBox1_MouseUp;
+
 
             MakePalette();
             MakeGradiant();
@@ -49,8 +39,15 @@ namespace Mandelbrot
             Region reg = GetValues();
             if (reg == null)
                 return; // message
+            MakeNew(reg);
+        }
 
-            var img = Mandelbrot.MakeImage(reg, _palette, _gradient);
+        private void MakeNew(Region reg)
+        {
+            int h = pictureBox1.Height;
+            int w = pictureBox1.Width;
+
+            var img = Mandelbrot.MakeImage(reg, _palette, _gradient, h, w);
 
             // TODO dispose old image
             pictureBox1.Image = img;
@@ -112,6 +109,85 @@ namespace Mandelbrot
                 root: root, minIterations: 1,
                 indexScale: 100, weight: 1.0);
         }
+
+
+        private void PictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            if (pictureBox1.Image != null)
+            {
+                if (_rect.Width > 0 && _rect.Height > 0)
+                {
+                    e.Graphics.FillRectangle(_selectionBrush, _rect);
+                }
+            }
+
+        }
+
+        private Point _rectStartPoint;
+        private Rectangle _rect;
+        private readonly Brush _selectionBrush = new SolidBrush(Color.FromArgb(128, 72, 145, 220));
+
+
+        private void PictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Determine the initial rectangle coordinates...
+            _rectStartPoint = e.Location;
+            Invalidate();
+        }
+
+        private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+                return;
+            Point tempEndPoint = e.Location;
+            _rect.Location = new Point(
+                Math.Min(_rectStartPoint.X, tempEndPoint.X),
+                Math.Min(_rectStartPoint.Y, tempEndPoint.Y));
+            _rect.Size = new Size(
+                Math.Abs(_rectStartPoint.X - tempEndPoint.X),
+                Math.Abs(_rectStartPoint.Y - tempEndPoint.Y));
+            pictureBox1.Invalidate();
+        }
+
+        private void PictureBox1_MouseUp(object sender, MouseEventArgs e)
+        {
+            var regio = GetValues();
+            // TODO normalize?
+            var origin = regio.Min;
+            double w = regio.Max.Real - regio.Min.Real;
+            double h = regio.Max.Imaginary - regio.Min.Imaginary;
+
+            double newR = regio.Min.Real + (_rect.Left * w / pictureBox1.Width);
+            double newI = regio.Min.Imaginary + (_rect.Top * h / pictureBox1.Height);
+
+            double newR2 = regio.Min.Real + (_rect.Right * w / pictureBox1.Width);
+            double newI2 = regio.Min.Imaginary + (_rect.Bottom * h / pictureBox1.Height);
+
+            Region newRegio = new Region(new Complex(newR,newI),
+                new Complex(newR2, newI2));
+            _rect = new Rectangle();
+
+            textBox1.Text = newR.ToString();
+            textBox2.Text = newI.ToString();
+            textBox3.Text = newR2.ToString();
+            textBox4.Text = newI2.ToString();
+
+            MakeNew(newRegio);
+        }
+
+        private void BtnReset_Click(object sender, EventArgs e)
+        {
+            coord1 = -2.1; //-2.5;
+            coord2 = -1.2; //-1;
+            coord3 = 0.8; //1;
+            coord4 = 1.2; //1;
+            oAndW = false;
+
+            textBox1.Text = coord1.ToString();
+            textBox2.Text = coord2.ToString();
+            textBox3.Text = coord3.ToString();
+            textBox4.Text = coord4.ToString();
+        }
     }
 
-}
+    }
