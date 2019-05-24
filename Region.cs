@@ -2,7 +2,7 @@
 
 namespace Mandelbrot
 {
-    public struct Region
+    public class Region
 
     {
         /// <summary>

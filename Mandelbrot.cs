@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Mandelbrot
@@ -252,6 +254,44 @@ namespace Mandelbrot
                     image[offset + 2] = red;
                 }
             }
+        }
+
+
+        private static int WIDE = 1024;
+        private static int HIGH = 1024;
+        private static int MAX_ITER = 256;
+
+        private static void CopyArrayToBitmap(int width, int height, int depth, byte[] buffer, BitmapData img)
+        {
+            var arrRowLength = width * depth;
+            var ptr = img.Scan0;
+            for (var i = 0; i < height; i++)
+            {
+                Marshal.Copy(buffer, i * arrRowLength, ptr, arrRowLength);
+                ptr += img.Stride;
+            }
+        }
+
+        public static Image MakeImage(Region region, Color[] palette, Gradient gradient)
+        {
+            int width = WIDE;
+            int height = HIGH;
+
+            var bmp = new Bitmap(width, HIGH, PixelFormat.Format24bppRgb);
+            var img = bmp.LockBits(new Rectangle(0, 0, WIDE, HIGH), ImageLockMode.ReadWrite, bmp.PixelFormat);
+            var depth = Image.GetPixelFormatSize(img.PixelFormat) / 8; //bytes per pixel
+
+            var buffer =
+                Mandelbrot.DrawMandelbrot(
+                    new Size(1, Environment.ProcessorCount),
+                    new Size(width, HIGH),
+                    region,
+                    MAX_ITER, palette, gradient, 1E10);
+
+            CopyArrayToBitmap(width, height, depth, buffer, img);
+            bmp.UnlockBits(img);
+
+            return bmp;
         }
     }
 }
