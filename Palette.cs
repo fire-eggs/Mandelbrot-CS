@@ -190,7 +190,9 @@ namespace Mandelbrot
         /// <exception cref="ArgumentException"><paramref name="red" />, <paramref name="green" />, or <paramref name="blue" /> is less than 0 or greater than 255.</exception>
         public static void Lerp(Color from, Color to, double bias, out byte red, out byte green, out byte blue)
         {
-            bias = double.IsNaN(bias) ? 0 : (double.IsInfinity(bias) ? 1 : bias);
+            // KBR normalize index may have prevented this??
+            //bias = double.IsNaN(bias) ? 0 : (double.IsInfinity(bias) ? 1 : bias);
+
             byte fromRed = from.R, fromGreen = from.G, fromBlue = from.B;
             red = (byte)(fromRed + (to.R - fromRed) * bias);
             green = (byte)(fromGreen + (to.G - fromGreen) * bias);
