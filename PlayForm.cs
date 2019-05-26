@@ -1,7 +1,13 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Globalization;
 using System.Numerics;
 using System.Windows.Forms;
+
+// X coord is 'real'; Y coord is 'imaginary'
+// MinX == MinR
+// MinY == MinI
 
 namespace Mandelbrot
 {
@@ -69,6 +75,7 @@ namespace Mandelbrot
             var v3 = parse(textBox3);
             var v4 = parse(textBox4);
 
+            // TODO mark invalid textbox
             if (double.IsNaN(v1) || double.IsNaN(v2) || double.IsNaN(v3) || double.IsNaN(v4))
                 return null;
 
@@ -167,10 +174,10 @@ namespace Mandelbrot
                 new Complex(newR2, newI2));
             _rect = new Rectangle();
 
-            textBox1.Text = newR.ToString();
-            textBox2.Text = newI.ToString();
-            textBox3.Text = newR2.ToString();
-            textBox4.Text = newI2.ToString();
+            textBox1.Text = newR.ToString(CultureInfo.InvariantCulture);
+            textBox2.Text = newI.ToString(CultureInfo.InvariantCulture);
+            textBox3.Text = newR2.ToString(CultureInfo.InvariantCulture);
+            textBox4.Text = newI2.ToString(CultureInfo.InvariantCulture);
 
             MakeNew(newRegio);
         }
@@ -187,6 +194,17 @@ namespace Mandelbrot
             textBox2.Text = coord2.ToString();
             textBox3.Text = coord3.ToString();
             textBox4.Text = coord4.ToString();
+        }
+
+        private void BtnSave_Click(object sender, EventArgs e)
+        {
+            // TODO set up initial folder correctly
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.OverwritePrompt = true;
+            sfd.FileName = "Image.png";
+            if (DialogResult.OK != sfd.ShowDialog())
+                return;
+            pictureBox1.Image.Save(sfd.FileName, ImageFormat.Png);
         }
     }
 

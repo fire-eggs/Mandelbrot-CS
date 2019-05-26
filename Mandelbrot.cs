@@ -259,7 +259,9 @@ namespace Mandelbrot
 
         private static int WIDE = 1024;
         private static int HIGH = 1024;
+        // TODO needs to auto-adjust
         private static int MAX_ITER = 512;
+        // TODO how to configure this?
         private static double BAILOUT = 1E10;
 
         private static void CopyArrayToBitmap(int width, int height, int depth, byte[] buffer, BitmapData img)
@@ -277,6 +279,8 @@ namespace Mandelbrot
         {
             return MakeImage(region, palette, gradient, HIGH, WIDE);
         }
+
+        // TODO create something which can change palette w/o re-calculating
 
         public static Image MakeImage(Region region, Color[] palette, Gradient gradient, int height, int width)
         {

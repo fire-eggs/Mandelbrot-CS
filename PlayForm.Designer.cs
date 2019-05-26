@@ -31,19 +31,32 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnReset = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.btnSave = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.flowLayoutPanel2.SuspendLayout();
+            this.flowLayoutPanel3.SuspendLayout();
+            this.flowLayoutPanel4.SuspendLayout();
+            this.flowLayoutPanel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -65,13 +78,14 @@
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Controls.Add(this.textBox1);
-            this.flowLayoutPanel1.Controls.Add(this.textBox2);
-            this.flowLayoutPanel1.Controls.Add(this.textBox3);
-            this.flowLayoutPanel1.Controls.Add(this.textBox4);
+            this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel2);
+            this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel3);
+            this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel4);
+            this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel5);
             this.flowLayoutPanel1.Controls.Add(this.checkBox1);
             this.flowLayoutPanel1.Controls.Add(this.button1);
             this.flowLayoutPanel1.Controls.Add(this.btnReset);
+            this.flowLayoutPanel1.Controls.Add(this.btnSave);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 12);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -80,36 +94,15 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(3, 3);
+            this.textBox1.Location = new System.Drawing.Point(46, 3);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(179, 20);
+            this.textBox1.Size = new System.Drawing.Size(101, 20);
             this.textBox1.TabIndex = 0;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(3, 29);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(179, 20);
-            this.textBox2.TabIndex = 1;
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(3, 55);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(179, 20);
-            this.textBox3.TabIndex = 2;
-            // 
-            // textBox4
-            // 
-            this.textBox4.Location = new System.Drawing.Point(3, 81);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(179, 20);
-            this.textBox4.TabIndex = 3;
             // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(3, 107);
+            this.checkBox1.Location = new System.Drawing.Point(3, 131);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(80, 17);
             this.checkBox1.TabIndex = 5;
@@ -118,12 +111,22 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(3, 130);
+            this.button1.Location = new System.Drawing.Point(3, 154);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 4;
             this.button1.Text = "Draw";
             this.button1.UseVisualStyleBackColor = true;
+            // 
+            // btnReset
+            // 
+            this.btnReset.Location = new System.Drawing.Point(3, 183);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(75, 23);
+            this.btnReset.TabIndex = 6;
+            this.btnReset.Text = "Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.BtnReset_Click);
             // 
             // pictureBox1
             // 
@@ -134,15 +137,120 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // btnReset
+            // flowLayoutPanel2
             // 
-            this.btnReset.Location = new System.Drawing.Point(3, 159);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(75, 23);
-            this.btnReset.TabIndex = 6;
-            this.btnReset.Text = "Reset";
-            this.btnReset.UseVisualStyleBackColor = true;
-            this.btnReset.Click += new System.EventHandler(this.BtnReset_Click);
+            this.flowLayoutPanel2.AutoSize = true;
+            this.flowLayoutPanel2.Controls.Add(this.label1);
+            this.flowLayoutPanel2.Controls.Add(this.textBox1);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(150, 26);
+            this.flowLayoutPanel2.TabIndex = 7;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 6);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(37, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Min X:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.AutoSize = true;
+            this.flowLayoutPanel3.Controls.Add(this.label2);
+            this.flowLayoutPanel3.Controls.Add(this.textBox2);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 35);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(150, 26);
+            this.flowLayoutPanel3.TabIndex = 8;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 6);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(37, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Min Y:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(46, 3);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(101, 20);
+            this.textBox2.TabIndex = 0;
+            // 
+            // flowLayoutPanel4
+            // 
+            this.flowLayoutPanel4.AutoSize = true;
+            this.flowLayoutPanel4.Controls.Add(this.label3);
+            this.flowLayoutPanel4.Controls.Add(this.textBox3);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 67);
+            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(153, 26);
+            this.flowLayoutPanel4.TabIndex = 9;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 6);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(40, 13);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Max X:";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(49, 3);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(101, 20);
+            this.textBox3.TabIndex = 0;
+            // 
+            // flowLayoutPanel5
+            // 
+            this.flowLayoutPanel5.AutoSize = true;
+            this.flowLayoutPanel5.Controls.Add(this.label4);
+            this.flowLayoutPanel5.Controls.Add(this.textBox4);
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 99);
+            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
+            this.flowLayoutPanel5.Size = new System.Drawing.Size(153, 26);
+            this.flowLayoutPanel5.TabIndex = 10;
+            // 
+            // label4
+            // 
+            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 6);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(40, 13);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Max Y:";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(49, 3);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(101, 20);
+            this.textBox4.TabIndex = 0;
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(3, 212);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 11;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // PlayForm
             // 
@@ -159,6 +267,14 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
+            this.flowLayoutPanel3.ResumeLayout(false);
+            this.flowLayoutPanel3.PerformLayout();
+            this.flowLayoutPanel4.ResumeLayout(false);
+            this.flowLayoutPanel4.PerformLayout();
+            this.flowLayoutPanel5.ResumeLayout(false);
+            this.flowLayoutPanel5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -168,12 +284,21 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Button btnSave;
     }
 }
