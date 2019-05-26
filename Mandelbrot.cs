@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -31,11 +30,6 @@ namespace Mandelbrot
         /// <param name="gradient"></param>
         /// <param name="bailout"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException">The <paramref name="action" /> argument is null.</exception>
-        /// <exception cref="AggregateException">At least one of the <see cref="T:System.Threading.Tasks.Task" /> instances was canceled. If a task was canceled, the <see cref="T:System.AggregateException" /> exception contains an <see cref="T:System.OperationCanceledException" /> exception in its <see cref="P:System.AggregateException.InnerExceptions" /> collection.-or-An exception was thrown during the execution of at least one of the <see cref="T:System.Threading.Tasks.Task" /> instances. </exception>
-        /// <exception cref="ObjectDisposedException">One or more of the <see cref="T:System.Threading.Tasks.Task" /> objects in <paramref name="tasks" /> has been disposed.</exception>
-        /// <exception cref="OverflowException">The array is multidimensional and contains more than <see cref="F:System.Int32.MaxValue" /> elements.</exception>
-        /// <exception cref="IndexOutOfRangeException"><paramref name="dimension" /> is less than zero.-or-<paramref name="dimension" /> is equal to or greater than <see cref="P:System.Array.Rank" />.</exception>
         public static byte[] DrawMandelbrot(Size threads, Size size, Region region, int maxIteration, Color[] palette,
             Gradient gradient, double bailout)
             => DrawMandelbrot(threads, new Size(0, 0), size, region, maxIteration, palette, gradient, bailout);
@@ -51,18 +45,13 @@ namespace Mandelbrot
         /// <param name="gradient"></param>
         /// <param name="bailout"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException">The <paramref name="action" /> argument is null.</exception>
-        /// <exception cref="AggregateException">At least one of the <see cref="T:System.Threading.Tasks.Task" /> instances was canceled. If a task was canceled, the <see cref="T:System.AggregateException" /> exception contains an <see cref="T:System.OperationCanceledException" /> exception in its <see cref="P:System.AggregateException.InnerExceptions" /> collection.-or-An exception was thrown during the execution of at least one of the <see cref="T:System.Threading.Tasks.Task" /> instances. </exception>
-        /// <exception cref="ObjectDisposedException">One or more of the <see cref="T:System.Threading.Tasks.Task" /> objects in <paramref name="tasks" /> has been disposed.</exception>
-        /// <exception cref="OverflowException">The array is multidimensional and contains more than <see cref="F:System.Int32.MaxValue" /> elements.</exception>
-        /// <exception cref="IndexOutOfRangeException"><paramref name="dimension" /> is less than zero.-or-<paramref name="dimension" /> is equal to or greater than <see cref="P:System.Array.Rank" />.</exception>
         public static byte[] DrawMandelbrot(Size threads, Size start, Size end, Region region, int maxIterations, Color[] palette,
             Gradient gradient, double bailout)
         {
             region = region.NormalizeRegion();
-            var cartesianRegion = new Region(
-                min: new Complex(region.Min.Real, -region.Min.Imaginary),
-                max: new Complex(region.Max.Real, -region.Max.Imaginary));
+            //var cartesianRegion = new Region(
+            //    min: new Complex(region.Min.Real, -region.Min.Imaginary),
+            //    max: new Complex(region.Max.Real, -region.Max.Imaginary));
             int globalStartX = start.Width, globalEndX = end.Width;
             int globalStartY = start.Height, globalEndY = end.Height;
 
@@ -289,7 +278,7 @@ namespace Mandelbrot
             var depth = Image.GetPixelFormatSize(img.PixelFormat) / 8; //bytes per pixel
 
             var buffer =
-                Mandelbrot.DrawMandelbrot(
+                DrawMandelbrot(
                     new Size(1, Environment.ProcessorCount),
                     new Size(width, height),
                     region,
