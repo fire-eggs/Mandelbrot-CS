@@ -277,12 +277,18 @@ namespace Mandelbrot
             var img = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, bmp.PixelFormat);
             var depth = Image.GetPixelFormatSize(img.PixelFormat) / 8; //bytes per pixel
 
+            // Auto iteration count formula from https://github.com/cslarsen/mandelbrot-js/blob/master/mandelbrot.js
+            var imaginD = Math.Abs(region.Min.Imaginary - region.Max.Imaginary);
+            var realD = Math.Abs(region.Min.Real - region.Max.Real);
+            var f = Math.Sqrt(0.001 + 2 * Math.Min(imaginD, realD));
+            var iter = (int)Math.Floor(223.0 / f);
+
             var buffer =
                 DrawMandelbrot(
                     new Size(1, Environment.ProcessorCount),
                     new Size(width, height),
                     region,
-                    MAX_ITER, palette, gradient, BAILOUT);
+                    iter, palette, gradient, BAILOUT);
 
             CopyArrayToBitmap(width, height, depth, buffer, img);
             bmp.UnlockBits(img);
