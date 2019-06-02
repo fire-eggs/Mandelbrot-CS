@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
@@ -255,6 +254,14 @@ namespace Mandelbrot
 
         private RgbValue[] _defPalette;
 
+        private void PictureBox1_SizeChanged(object sender, EventArgs e)
+        {
+            var h = pictureBox1.ClientSize.Height;
+            var w = pictureBox1.ClientSize.Width;
+
+            // show picture size in title bar, aiming for square
+            Text = $"PlayForm [{h} x {w}]";
+        }
     }
 
     }
