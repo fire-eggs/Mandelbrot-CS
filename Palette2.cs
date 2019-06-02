@@ -26,6 +26,9 @@ namespace Mandelbrot
                     try
                     {
                         string palleteString = palleteData.ReadLine();
+                        if (string.IsNullOrWhiteSpace(palleteString))
+                            continue;
+
                         string[] palleteTokens =
                             palleteString.Split(new char[1] {' '}, StringSplitOptions.RemoveEmptyEntries);
                         int r = int.Parse(palleteTokens[0]);

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace Mandelbrot
 {
@@ -33,7 +34,9 @@ namespace Mandelbrot
 
         public Color toColor()
         {
-            return Color.FromArgb(red, green, blue);
+            return Color.FromArgb(Math.Min(red,255), 
+                Math.Min(green,255), 
+                Math.Min(blue,255));
         }
     }
 }
