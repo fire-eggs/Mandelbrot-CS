@@ -96,6 +96,7 @@
     <Compile Include="Mandelbrot.cs" />
     <Compile Include="MathUtilities.cs" />
     <Compile Include="Palette.cs" />
+    <Compile Include="Palette2.cs" />
     <Compile Include="PlayForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,9 +116,37 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Region.cs" />
+    <Compile Include="RgbValue.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Palettes\altern.map" />
+    <None Include="Palettes\blues.map" />
+    <None Include="Palettes\chroma.map" />
+    <None Include="Palettes\default.map" />
+    <None Include="Palettes\defaultw.map" />
+    <None Include="Palettes\firestrm.map" />
+    <None Include="Palettes\froth3.map" />
+    <None Include="Palettes\froth316.map" />
+    <None Include="Palettes\froth6.map" />
+    <None Include="Palettes\froth616.map" />
+    <None Include="Palettes\gamma1.map" />
+    <None Include="Palettes\gamma2.map" />
+    <None Include="Palettes\glasses1.map" />
+    <None Include="Palettes\glasses2.map" />
+    <None Include="Palettes\golden.map" />
+    <None Include="Palettes\goodega.map" />
+    <None Include="Palettes\green.map" />
+    <None Include="Palettes\grey.map" />
+    <None Include="Palettes\grid.map" />
+    <None Include="Palettes\headache.map" />
+    <None Include="Palettes\landscap.map" />
+    <None Include="Palettes\lyapunov.map" />
+    <None Include="Palettes\neon.map" />
+    <None Include="Palettes\paintjet.map" />
+    <None Include="Palettes\royal.map" />
+    <None Include="Palettes\topo.map" />
+    <None Include="Palettes\volcano.map" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

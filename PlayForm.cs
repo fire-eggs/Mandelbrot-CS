@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
+using System.IO;
 using System.Numerics;
 using System.Windows.Forms;
 
@@ -35,8 +37,10 @@ namespace Mandelbrot
             pictureBox1.MouseMove += PictureBox1_MouseMove;
             pictureBox1.MouseUp += PictureBox1_MouseUp;
 
+            FillPalettes();
 
             MakePalette();
+            _defPalette = _palette;
             MakeGradiant();
         }
 
@@ -206,6 +210,47 @@ namespace Mandelbrot
                 return;
             pictureBox1.Image.Save(sfd.FileName, ImageFormat.Png);
         }
+
+        private const string BUILTIN = "Built-in";
+
+        private void FillPalettes()
+        {
+            cmbPalette.BeginUpdate();
+            cmbPalette.Items.Add(BUILTIN);
+            var palFiles = Palette2.FindPalettes();
+            foreach (var palFile in palFiles)
+            {
+                cmbPalette.Items.Add(Path.GetFileNameWithoutExtension(palFile));
+            }
+
+            cmbPalette.SelectedIndex = 0;
+            cmbPalette.EndUpdate();
+        }
+
+        private void CmbPalette_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_defPalette == null)
+                return; // too soon
+            var palName = cmbPalette.SelectedItem;
+            if (palName == BUILTIN)
+                _palette = _defPalette;
+            else
+            {
+                var palPath = Path.Combine(Application.StartupPath, "Palettes\\" + palName + ".map");
+                var rgbvals = Palette2.LoadPalette(palPath);
+                List<Color> clrs = new List<Color>();
+                foreach (var anRGB in rgbvals)
+                {
+                    clrs.Add(anRGB.toColor());
+                }
+
+                _palette = clrs.ToArray();
+            }
+            MakeGradiant();
+        }
+
+        private Color[] _defPalette;
+
     }
 
     }
