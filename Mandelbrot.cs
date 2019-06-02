@@ -86,6 +86,8 @@ namespace Mandelbrot
             var maxIterationColor = gradient.MaxIterationColor;
             #endregion
 
+// TODO consider Parallel.For instead of threads
+
             var tasks = new Thread[xThreads * yThreads];
             for (var iy = 0; iy < yThreads; ++iy)
             {
@@ -113,7 +115,7 @@ namespace Mandelbrot
                     var taskIndex = iy * xThreads + ix;
                     tasks[taskIndex] =
                         new Thread(() =>
-                    DrawMandelbrot(
+                    DrawMandelbrotDC(
                         localStartX, localStartY,
                         localWidth, localHeight,
                         localStart.Real, localStart.Imaginary, maxIterations,
@@ -303,6 +305,136 @@ namespace Mandelbrot
             bmp.UnlockBits(img);
 
             return bmp;
+        }
+
+        /// <summary>
+        /// The following code was decompiled by JetBrains dotTrace.
+        /// I have subsequently made a couple of micro optimizations,
+        /// but it otherwise is equivalent to the DrawMandelbrot code
+        /// above.
+        /// </summary>
+        /// <param name="startX"></param>
+        /// <param name="startY"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="realStart"></param>
+        /// <param name="imaginaryStart"></param>
+        /// <param name="maxIterations"></param>
+        /// <param name="realScale"></param>
+        /// <param name="imaginaryScale"></param>
+        /// <param name="scan"></param>
+        /// <param name="palette"></param>
+        /// <param name="gradient"></param>
+        /// <param name="image"></param>
+        /// <param name="colors"></param>
+        /// <param name="bailoutSquared"></param>
+        /// <param name="halfOverLogBailout"></param>
+        /// <param name="logBase"></param>
+        /// <param name="logMinIterations"></param>
+        /// <param name="root"></param>
+        /// <param name="rootMinIterations"></param>
+        /// <param name="indexScale"></param>
+        /// <param name="indexWeight"></param>
+        /// <param name="useSqrt"></param>
+        /// <param name="maxIterationColor"></param>
+        private static void DrawMandelbrotDC(
+          int startX,
+          int startY,
+          int width,
+          int height,
+          double realStart,
+          double imaginaryStart,
+          int maxIterations,
+          double realScale,
+          double imaginaryScale,
+          int scan,
+          RgbValue[] palette,
+          Gradient gradient,
+          byte[] image,
+          int colors,
+          double bailoutSquared,
+          double halfOverLogBailout,
+          double logBase,
+          double logMinIterations,
+          double root,
+          double rootMinIterations,
+          double indexScale,
+          double indexWeight,
+          bool useSqrt,
+          Color maxIterationColor)
+        {
+            for (int index1 = 0; index1 < height; ++index1)
+            {
+                for (int index2 = 0; index2 < width; ++index2)
+                {
+                    double num1 = 0.0;
+                    double num2 = 0.0;
+                    double num3 = 0.0;
+                    double num4 = 0.0;
+                    double d = 0.0;
+                    double num5 = (double)index2 * realScale + realStart;
+                    double num6 = (double)index1 * imaginaryScale + imaginaryStart;
+                    int num7;
+                    double num1num1 = 0.0;
+                    double num3num3 = 0.0;
+                    for (num7 = 0; d < bailoutSquared && num7 < maxIterations; ++num7)
+                    {
+                        double num8 = num1num1 - num3num3 + num5;
+                        double num9 = 2.0 * num1 * num3 + num6;
+                        double num10 = num8 - num1;
+                        double num11 = num9 - num3;
+                        if (num10 * num10 < 1E-20 && num11 * num11 < 1E-20)
+                        {
+                            num7 = maxIterations;
+                            break;
+                        }
+                        double num12 = num8 - num2;
+                        double num13 = num9 - num4;
+                        if (num12 * num12 < 1E-20 && num13 * num13 < 1E-20)
+                        {
+                            num7 = maxIterations;
+                            break;
+                        }
+                        num2 = num1;
+                        num4 = num3;
+                        num1 = num8;
+                        num3 = num9;
+                        num1num1 = num1 * num1;
+                        num3num3 = num3 * num3;
+                        d = num1num1 + num3num3; // save num1*num1, num3*num3, used above
+                    }
+                    double num14 = Math.Log(Math.Log(d) * halfOverLogBailout) * Mandelbrot.OneOverLog2;
+                    double num15 = indexScale * ((double)(num7 + 1) - indexWeight * num14);
+                    if (useSqrt)
+                        num15 = Math.Sqrt(num15) - rootMinIterations;
+                    else if (gradient.RootIndex)
+                        num15 = Math.Pow(num15, root) - rootMinIterations;
+                    if (gradient.LogIndex)
+                        num15 = Math.Log(num15, logBase) - logMinIterations;
+                    double index3 = MathUtilities.NormalizeIndex(num15, colors);
+                    int index4 = MathUtilities.PreparePaletteIndex(index3, colors, gradient);
+                    byte num16;
+                    byte num17;
+                    byte num18;
+                    if (num7 >= maxIterations)
+                    {
+                        num16 = maxIterationColor.R;
+                        num17 = maxIterationColor.G;
+                        num18 = maxIterationColor.B;
+                    }
+                    else
+                    {
+                        RgbValue rgbValue = RgbValue.LerpColors(palette[index4], palette[(index4 + 1) % colors], index3 - (double)(long)index3);
+                        num16 = (byte)rgbValue.red;
+                        num17 = (byte)rgbValue.green;
+                        num18 = (byte)rgbValue.blue;
+                    }
+                    int index5 = 3 * ((startY + index1) * scan + (startX + index2));
+                    image[index5] = num18;
+                    image[index5 + 1] = num17;
+                    image[index5 + 2] = num16;
+                }
+            }
         }
 
     }
