@@ -247,6 +247,7 @@ namespace Mandelbrot
                 _palette = clrs.ToArray();
             }
             MakeGradiant();
+            Button1_Click(null,null);
         }
 
         private Color[] _defPalette;
