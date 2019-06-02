@@ -106,6 +106,9 @@ namespace Mandelbrot
 
         private Gradient _gradient;
 
+        //private const double PALETTE_BAILOUT = 1E10;
+        private const double PALETTE_BAILOUT = 1E16;
+
         private void MakeGradiant()
         {
             var scaleDownFactor = Palette.CalculateScaleDownFactorForLinearMapping(Palette.FindPaletteColorLocation(_palette, RgbValue.BLACK));
@@ -115,7 +118,7 @@ namespace Mandelbrot
             _gradient = new Gradient(
                 maxIterationColor,
                 Palette.RecommendedGradientScale(_palette.Length, true, scaleDownFactor),
-                0, 1E10,
+                0, PALETTE_BAILOUT,
                 logIndex: true, rootIndex: false,
                 root: root, minIterations: 1,
                 indexScale: 100, weight: 1.0);
