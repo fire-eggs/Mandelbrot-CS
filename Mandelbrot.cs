@@ -249,7 +249,7 @@ namespace Mandelbrot
         private static int WIDE = 1024;
         private static int HIGH = 1024;
         // TODO needs to auto-adjust
-        private static int MAX_ITER = 512;
+        private static int MAX_ITER = 5000;
         // TODO how to configure this?
         private static double BAILOUT = 1E10;
 
@@ -281,7 +281,9 @@ namespace Mandelbrot
             var imaginD = Math.Abs(region.Min.Imaginary - region.Max.Imaginary);
             var realD = Math.Abs(region.Min.Real - region.Max.Real);
             var f = Math.Sqrt(0.001 + 2 * Math.Min(imaginD, realD));
-            var iter = (int)Math.Floor(223.0 / f);
+            //var iter = (int)Math.Floor(223.0 / f);
+            var iter = (int)Math.Floor(347.0 / f);
+            iter = Math.Max(MAX_ITER, iter);
 
             var buffer =
                 DrawMandelbrot(
