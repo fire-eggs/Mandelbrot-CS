@@ -15,6 +15,8 @@ namespace Mandelbrot
             blue = b;
         }
 
+        public static RgbValue BLACK = new RgbValue(0,0,0);
+
         public static double Lerp(double v0, double v1, double t) => (1 - t) * v0 + t * v1;
 
         public static RgbValue LerpColors(RgbValue a, RgbValue b, double alpha)

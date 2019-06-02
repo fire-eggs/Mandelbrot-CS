@@ -30,7 +30,7 @@ namespace Mandelbrot
         /// <param name="gradient"></param>
         /// <param name="bailout"></param>
         /// <returns></returns>
-        public static byte[] DrawMandelbrot(Size threads, Size size, Region region, int maxIteration, Color[] palette,
+        public static byte[] DrawMandelbrot(Size threads, Size size, Region region, int maxIteration, RgbValue[] palette,
             Gradient gradient, double bailout)
             => DrawMandelbrot(threads, new Size(0, 0), size, region, maxIteration, palette, gradient, bailout);
 
@@ -45,7 +45,7 @@ namespace Mandelbrot
         /// <param name="gradient"></param>
         /// <param name="bailout"></param>
         /// <returns></returns>
-        public static byte[] DrawMandelbrot(Size threads, Size start, Size end, Region region, int maxIterations, Color[] palette,
+        public static byte[] DrawMandelbrot(Size threads, Size start, Size end, Region region, int maxIterations, RgbValue[] palette,
             Gradient gradient, double bailout)
         {
             region = region.NormalizeRegion();
@@ -167,7 +167,7 @@ namespace Mandelbrot
             double realStart, double imaginaryStart,
             int maxIterations,
             double realScale, double imaginaryScale,
-            int scan, Color[] palette, Gradient gradient, byte[] image, int colors,
+            int scan, RgbValue[] palette, Gradient gradient, byte[] image, int colors,
             double bailoutSquared, double halfOverLogBailout,
             double logBase, double logMinIterations,
             double root, double rootMinIterations,
@@ -231,11 +231,18 @@ namespace Mandelbrot
                     }
                     else
                     {
-                        Palette.Lerp(
+                        var outval = RgbValue.LerpColors(
                             palette[actualIndex],
                             palette[(actualIndex + 1) % colors],
-                            index - (long)index,
-                            out red, out green, out blue);
+                            index - (long) index);
+                        //Palette.Lerp(
+                        //    palette[actualIndex],
+                        //    palette[(actualIndex + 1) % colors],
+                        //    index - (long)index,
+                        //    out red, out green, out blue);
+                        red = (byte)outval.red;
+                        green = (byte)outval.green;
+                        blue = (byte)outval.blue;
                     }
                     var offset = BitDepthFor24BppRgb * ((startY + py) * scan + (startX + px));
                     image[offset] = blue;
@@ -264,14 +271,14 @@ namespace Mandelbrot
             }
         }
 
-        public static Image MakeImage(Region region, Color[] palette, Gradient gradient)
+        public static Image MakeImage(Region region, RgbValue[] palette, Gradient gradient)
         {
             return MakeImage(region, palette, gradient, HIGH, WIDE);
         }
 
         // TODO create something which can change palette w/o re-calculating
 
-        public static Image MakeImage(Region region, Color[] palette, Gradient gradient, int height, int width)
+        public static Image MakeImage(Region region, RgbValue[] palette, Gradient gradient, int height, int width)
         {
             var bmp = new Bitmap(width, height, PixelFormat.Format24bppRgb);
             var img = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, bmp.PixelFormat);

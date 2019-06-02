@@ -115,10 +115,10 @@ namespace Mandelbrot
         /// <exception cref="InvalidOperationException"><paramref name="source" /> contains no elements.</exception>
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="count" /> is less than 0.-or-<paramref name="start" /> + <paramref name="count" /> -1 is larger than <see cref="F:System.Int32.MaxValue" />.</exception>
-        public static Color[] GenerateColorPalette(Tuple<double, Color>[] controls, int numColors,
+        public static RgbValue[] GenerateColorPalette(Tuple<double, Color>[] controls, int numColors,
             MathUtilities.ExtrapolationType extrapolationType = MathUtilities.ExtrapolationType.None)
         {
-            var palette = new Color[numColors];
+            var palette = new RgbValue[numColors];
             var controlCount = controls.Length;
             var oneOverNumColors = 1.0 / numColors;
             double[] red = new double[controlCount],
@@ -141,21 +141,21 @@ namespace Mandelbrot
             for (var i = 0; i < numColors; ++i)
             {
                 var arg = i * oneOverNumColors;
-                palette[i] = Color.FromArgb(
-                    MathUtilities.Clamp((int)channelSplines[0](arg), 0, 255),
-                    MathUtilities.Clamp((int)channelSplines[1](arg), 0, 255),
-                    MathUtilities.Clamp((int)channelSplines[2](arg), 0, 255));
+                palette[i] = new RgbValue();
+                palette[i].red = MathUtilities.Clamp((int) channelSplines[0](arg), 0, 255);
+                palette[i].green = MathUtilities.Clamp((int)channelSplines[1](arg), 0, 255); 
+                palette[i].blue = MathUtilities.Clamp((int)channelSplines[2](arg), 0, 255);
             }
             return palette;
         }
 
         #region Routines for ensuring the highest iteration counts map to a specific color
-        private static double EuclideanDistance(Color a, Color b)
+        private static double EuclideanDistance(RgbValue a, RgbValue b)
         {
-            double dR = a.R - b.R, dG = a.G - b.G, dB = a.B - b.B;
+            double dR = a.red - b.red, dG = a.green - b.green, dB = a.blue - b.blue;
             return Math.Sqrt(dR * dR + dG * dG + dB * dB);
         }
-        public static double FindPaletteColorLocation(Color[] palette, Color color)
+        public static double FindPaletteColorLocation(RgbValue[] palette, RgbValue color)
         {
             var locationOfPaletteColorClosestToBlack = 0.0;
             var distanceOfPaletteColorClosestToBlack = EuclideanDistance(palette[0], color);

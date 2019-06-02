@@ -87,7 +87,7 @@ namespace Mandelbrot
         }
 
         private static int NUMCOLORS = 768;
-        private Color[] _palette;
+        private RgbValue[] _palette;
 
         private void MakePalette()
         {
@@ -108,7 +108,7 @@ namespace Mandelbrot
 
         private void MakeGradiant()
         {
-            var scaleDownFactor = Palette.CalculateScaleDownFactorForLinearMapping(Palette.FindPaletteColorLocation(_palette, Color.Black));
+            var scaleDownFactor = Palette.CalculateScaleDownFactorForLinearMapping(Palette.FindPaletteColorLocation(_palette, RgbValue.BLACK));
             var root = 4.0;
 
             var maxIterationColor = Color.Black;
@@ -232,25 +232,25 @@ namespace Mandelbrot
             if (_defPalette == null)
                 return; // too soon
             var palName = cmbPalette.SelectedItem;
-            if (palName == BUILTIN)
+            if (palName.ToString() == BUILTIN)
                 _palette = _defPalette;
             else
             {
                 var palPath = Path.Combine(Application.StartupPath, "Palettes\\" + palName + ".map");
                 var rgbvals = Palette2.LoadPalette(palPath);
-                List<Color> clrs = new List<Color>();
-                foreach (var anRGB in rgbvals)
-                {
-                    clrs.Add(anRGB.toColor());
-                }
+                //List<Color> clrs = new List<Color>();
+                //foreach (var anRGB in rgbvals)
+                //{
+                //    clrs.Add(anRGB.toColor());
+                //}
 
-                _palette = clrs.ToArray();
+                _palette = rgbvals;
             }
             MakeGradiant();
             Button1_Click(null,null);
         }
 
-        private Color[] _defPalette;
+        private RgbValue[] _defPalette;
 
     }
 
